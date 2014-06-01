@@ -86,6 +86,7 @@ struct image* load_bmp(const char *file_name) {
 	img->width = *img_width;
 	img->height = *img_height;
 	img->pixel_array_size = *img_size;
+    img->bbp = *bbp;
 
 	//allocate the pixel buffer
 	img->pixel_array = malloc(*img_size);
@@ -101,6 +102,11 @@ struct image* load_bmp(const char *file_name) {
 
 	//reverse pixel array
 	reverse_pixel_array(img);
+
+    if (img->bbp > 24)  //Warn user if they load an image with a higher than 24bit bbp.
+    {
+        printf("You have loaded a bmp with a higher than 24bit colourdepth.\nSome things may not behave correctly.\n");
+    }
 
 	return img;	
 }
@@ -222,5 +228,17 @@ void reverse_pixel_array(struct image *img) {
 		//advance the position we are in the row, so we know when we can skip the padding bytes
 		row_pos++;	
 	}
+}
+
+
+//This returns the bbp of the loaded image as an integer.
+//uses a 32bit int to avoid integer overflow.
+uint16_t get_colour_depth(struct image *img)
+{
+
+    uint32_t depth = img->bbp;
+
+    
+    return depth;
 }
 
