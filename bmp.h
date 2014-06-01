@@ -9,6 +9,7 @@ struct image {
 	uint32_t width;
 	uint32_t height;
 	uint32_t row_length;
+    uint32_t bbp;
 };
 
 //print out pixel data to std out omitting padded bytes
@@ -26,3 +27,5 @@ extern struct image* load_bmp(const char *file_name);
 //free the memory used by the images pixel data
 void free_img(unsigned char *pixel_array, struct image *img);
 
+//get the colour depth for the currently loaded image as integer.
+extern uint16_t get_colour_depth(struct image *img);
